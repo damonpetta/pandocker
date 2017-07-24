@@ -3,8 +3,8 @@ FROM ubuntu:latest
 ENV DEBIAN_FRONTEND noninteractive
 
 # install pandoc & latex packages
-RUN apt-get update -y \
-  && apt-get install -y --no-install-recommends \
+RUN apt-get update -y && \
+  apt-get install -y --no-install-recommends \
     texlive-latex-base \
     texlive-xetex latex-xcolor \
     texlive-latex-extra \
@@ -12,11 +12,9 @@ RUN apt-get update -y \
     fontconfig \
     pandoc \
     lmodern \
-    install \
     wget \
-    xzdec
-
-RUN useradd -ms /bin/bash pandoc && \
+    xzdec && \
+  useradd -ms /bin/bash pandoc && \
 
 USER pandoc
 
