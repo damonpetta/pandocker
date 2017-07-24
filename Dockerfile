@@ -4,6 +4,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # install pandoc & latex packages
 RUN apt-get update -y && \
+
   apt-get install -y --no-install-recommends \
     texlive-latex-base \
     texlive-xetex latex-xcolor \
@@ -14,7 +15,8 @@ RUN apt-get update -y && \
     lmodern \
     wget \
     xzdec && \
-  useradd -ms /bin/bash pandoc && \
+
+  useradd -ms /bin/bash pandoc
 
 USER pandoc
 
