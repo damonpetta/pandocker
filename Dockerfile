@@ -11,6 +11,7 @@ RUN apt-get update -y && \
     texlive-latex-extra \
     texlive-fonts-extra \
     texlive-fonts-recommended \
+    texlive-generic-recommended \
     fontconfig \
     pandoc \
     lmodern \
