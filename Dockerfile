@@ -10,6 +10,7 @@ RUN apt-get update -y && \
     texlive-xetex latex-xcolor \
     texlive-latex-extra \
     texlive-fonts-extra \
+    texlive-fonts-recommended \
     fontconfig \
     pandoc \
     lmodern \
