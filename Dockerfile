@@ -14,9 +14,12 @@ RUN apt-get update -y && \
     texlive-generic-recommended \
     fontconfig \
     pandoc \
+    python-pip \
     lmodern \
     wget \
     xzdec && \
+
+  pip install gitchangelog pystache pandocfilters && \
 
   useradd -ms /bin/bash pandoc
 
