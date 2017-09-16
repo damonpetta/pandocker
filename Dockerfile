@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM debian:latest
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -18,14 +18,13 @@ RUN apt-get update -y && \
     lmodern \
     wget \
     xzdec && \
-
   useradd -ms /bin/bash pandoc
 
 USER pandoc
 
 # Install latex and dependencies
 RUN tlmgr init-usertree ; \
-  tlmgr option repository ftp://tug.org/historic/systems/texlive/2015/tlnet-final && \
+  tlmgr update --self && \
   tlmgr install lastpage && \
   tlmgr install moderncv && \
   tlmgr install tufte-latex && \
@@ -41,7 +40,6 @@ RUN tlmgr init-usertree ; \
   tlmgr install ucs && \
   tlmgr install etoolbox && \
   tlmgr install fontawesome
-
 
 WORKDIR /source
 
