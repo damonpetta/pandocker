@@ -32,11 +32,11 @@ To use as a drop in replacement for pandoc + latex add the following to `.bash_p
 
 ```
 pandoc() {
-  docker run -v $(pwd):/source damonpetta/pandocker $@
+  docker run --rm -v $(pwd):/source damonpetta/pandocker $@
 }
 ```
 
 ### Beamer
 
-`docker run -v $$(pwd):/source damonpetta/pandocker --latex-engine=xelatex -t beamer -H your_style.tex -o beamer.pdf beamer.md`
+`docker run --rm -v $$(pwd):/source damonpetta/pandocker --latex-engine=xelatex -t beamer -H your_style.tex -o beamer.pdf beamer.md`
 
