@@ -7,6 +7,7 @@ RUN apt-get update -y && \
 
   apt-get install -y --no-install-recommends \
     curl \
+    ca-certificates \
     make \
     git \
     texlive-latex-base \
