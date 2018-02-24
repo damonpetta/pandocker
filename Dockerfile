@@ -6,6 +6,9 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update -y && \
 
   apt-get install -y --no-install-recommends \
+    curl \
+    make \
+    git \
     texlive-latex-base \
     texlive-xetex latex-xcolor \
     texlive-latex-extra \
