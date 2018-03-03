@@ -16,8 +16,10 @@ RUN apt-get update -y && \
     texlive-fonts-extra \
     texlive-fonts-recommended \
     texlive-generic-recommended \
+    texlive-luatex \
     fontconfig \
     pandoc \
+    pandoc-citeproc \
     python3-pandocfilters \
     lmodern \
     wget \
