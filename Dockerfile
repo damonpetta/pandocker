@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM debian:sid
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -11,7 +11,7 @@ RUN apt-get update -y && \
     make \
     git \
     texlive-latex-base \
-    texlive-xetex latex-xcolor \
+    texlive-xetex \
     texlive-latex-extra \
     texlive-fonts-extra \
     texlive-fonts-recommended \
