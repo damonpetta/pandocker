@@ -7,6 +7,7 @@ RUN apt-get update -y && \
 
   apt-get install -y --no-install-recommends \
     curl \
+    cabal-install \
     ca-certificates \
     make \
     git \
@@ -18,15 +19,55 @@ RUN apt-get update -y && \
     texlive-generic-recommended \
     texlive-luatex \
     fontconfig \
-    pandoc \
-    pandoc-citeproc \
     python3-pandocfilters \
     lmodern \
     wget \
     unzip \
+    imagemagick \
+    librsvg2-bin \
+    librsvg2-common \
+    zlib1g \
+    zlib1g-dev
     xzdec && \
-  useradd -ms /bin/bash pandoc
 
+# fix the access rights for imagemagick
+  sed -i -e 's/rights="none"/rights="read|write"/g' /etc/ImageMagick-6/policy.xml &&\
+  sed -i -e 's/<\/policymap>/<policy domain="module" rights="read|write" pattern="{PS,PDF,XPS}" \/>\n<\/policymap>/g' /etc/ImageMagick-6/policy.xml &&\
+
+# get the newest list of packages
+    cabal update &&\
+
+# install the dependencies of the packages we want
+    cabal install --dependencies-only \
+                  pandoc \
+                  pandoc-citeproc \
+                  pandoc-citeproc-preamble \
+                  pandoc-crossref \
+                  latex-formulae-pandoc &&\
+
+# install the packages we want
+    cabal install pandoc \
+                  pandoc-citeproc \
+                  pandoc-citeproc-preamble \
+                  pandoc-crossref \
+                  latex-formulae-pandoc &&\
+
+# clear unnecessary cabal files
+    rm -rf /root/.cabal/logs &&\
+    rm -rf /root/.cabal/packages &&\
+
+# clean up all temporary files
+    apt-get clean &&\
+    apt-get autoclean -y &&\
+    apt-get autoremove -y &&\
+    apt-get clean &&\
+    rm -rf /tmp/* /var/tmp/* &&\
+    rm -rf /var/lib/apt/lists/* &&\
+    rm -f /etc/ssh/ssh_host_* && \
+
+# add pandoc user    
+ useradd -ms /bin/bash pandoc
+ 
 USER pandoc
 
 WORKDIR /tmp
