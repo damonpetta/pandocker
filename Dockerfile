@@ -27,7 +27,7 @@ RUN apt-get update -y && \
     librsvg2-bin \
     librsvg2-common \
     zlib1g \
-    zlib1g-dev
+    zlib1g-dev \
     xzdec && \
 
 # fix the access rights for imagemagick
