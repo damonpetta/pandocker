@@ -1,6 +1,6 @@
 FROM alpine:3.9
 
-RUN apk -U add \
+RUN apk --no-cache -U add \
     curl \
     cabal \
     build-base \
@@ -52,7 +52,6 @@ RUN apk -U add \
 
 # clean up all temporary files
     apk -U del cabal build-base ghc &&\
-    apk -v cache clean &&\
 
 # add pandoc user
  useradd -ms /bin/bash pandoc
