@@ -36,7 +36,8 @@ RUN apt-get update -y && \
 
 # get the newest list of packages
     mkdir -p /root/.cabal &&\
-    echo 'jobs: 8' >> ~/.cabal/config &&\
+    echo "jobs: $(grep -c ^processor /proc/cpuinfo)" >> ~/.cabal/config &&\
+    echo "remote-repo: hackage.haskell.org:http://hackage.haskell.org/packages" >> ~/.cabal/config &&\
     cabal update &&\
 
 # install the dependencies of the packages we want
