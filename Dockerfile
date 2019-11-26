@@ -1,34 +1,25 @@
-FROM debian:latest
+FROM alpine:3.9
 
-ENV DEBIAN_FRONTEND noninteractive
-
-# install pandoc & latex packages
-RUN apt-get update -y && \
-
-  apt-get install -y --no-install-recommends \
+RUN apk -U add \
     curl \
-    cabal-install \
+    cabal \
+    build-base \
     ca-certificates \
     make \
     git \
-    texlive-latex-base \
+    ghc \
+    texlive \
     texlive-xetex \
-    texlive-latex-extra \
-    texlive-fonts-extra \
-    texlive-fonts-recommended \
-    texlive-generic-recommended \
     texlive-luatex \
     fontconfig \
-    python3-pandocfilters \
-    lmodern \
     wget \
     unzip \
-    imagemagick \
-    librsvg2-bin \
-    librsvg2-common \
-    zlib1g \
-    zlib1g-dev \
-    xzdec && \
+    imagemagick6 \
+    librsvg \
+    librsvg-dev\
+    zlib \
+    zlib-dev \
+    xz-dev && \
 
 # fix the access rights for imagemagick
   sed -i -e 's/rights="none"/rights="read|write"/g' /etc/ImageMagick-6/policy.xml &&\
@@ -36,7 +27,7 @@ RUN apt-get update -y && \
 
 # get the newest list of packages
     mkdir -p /root/.cabal &&\
-    echo "jobs: $(grep -c ^processor /proc/cpuinfo)" >> ~/.cabal/config &&\
+    echo "jobs: 16" >> ~/.cabal/config &&\
     echo "remote-repo: hackage.haskell.org:http://hackage.haskell.org/packages" >> ~/.cabal/config &&\
     cabal update &&\
 
@@ -60,17 +51,12 @@ RUN apt-get update -y && \
     rm -rf /root/.cabal/packages &&\
 
 # clean up all temporary files
-    apt-get clean &&\
-    apt-get autoclean -y &&\
-    apt-get autoremove -y &&\
-    apt-get clean &&\
-    rm -rf /tmp/* /var/tmp/* &&\
-    rm -rf /var/lib/apt/lists/* &&\
-    rm -f /etc/ssh/ssh_host_* && \
+    apk -U del cabal build-base ghc &&\
+    apk -v cache clean &&\
 
-# add pandoc user    
+# add pandoc user
  useradd -ms /bin/bash pandoc
- 
+
 USER pandoc
 
 WORKDIR /tmp
