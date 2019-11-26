@@ -35,6 +35,8 @@ RUN apt-get update -y && \
   sed -i -e 's/<\/policymap>/<policy domain="module" rights="read|write" pattern="{PS,PDF,XPS}" \/>\n<\/policymap>/g' /etc/ImageMagick-6/policy.xml &&\
 
 # get the newest list of packages
+    mkdir -p /root/.cabal/config &&\
+    echo 'jobs: 8' >> ~/.cabal/config &&\
     cabal update &&\
 
 # install the dependencies of the packages we want
