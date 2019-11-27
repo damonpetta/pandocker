@@ -1,9 +1,10 @@
-FROM alpine:3.9
+FROM alpine:3.10
 
 RUN apk --no-cache -U add \
     curl \
     cabal \
     build-base \
+    bash \
     ca-certificates \
     make \
     git \
@@ -27,34 +28,38 @@ RUN apk --no-cache -U add \
 
 # get the newest list of packages
     mkdir -p /root/.cabal &&\
-    echo "jobs: 16" >> ~/.cabal/config &&\
     echo "remote-repo: hackage.haskell.org:http://hackage.haskell.org/packages" >> ~/.cabal/config &&\
+    echo "jobs: 64" >> ~/.cabal/config &&\
     cabal update &&\
 
 # install the dependencies of the packages we want
     cabal install --dependencies-only \
-                  pandoc \
                   pandoc-citeproc \
                   pandoc-citeproc-preamble \
                   pandoc-crossref \
-                  latex-formulae-pandoc &&\
+                  latex-formulae-pandoc && \
 
 # install the packages we want
-    cabal install pandoc \
-                  pandoc-citeproc \
-                  pandoc-citeproc-preamble \
-                  pandoc-crossref \
-                  latex-formulae-pandoc &&\
+    cabal install \
+      --prefix=/usr \
+      --libsubdir='/usr/lib' \
+      --datasubdir='/usr/pandoc' \
+      --docdir='/usr/share/pandoc' \
+      pandoc &&\
+
+
+      #--ghc-options="-static -optl-static -optl-pthread" \
+      #-fembed_data_files \
 
 # clear unnecessary cabal files
     rm -rf /root/.cabal/logs &&\
-    rm -rf /root/.cabal/packages &&\
+    rm -rf /root/.cabal &&\
 
 # clean up all temporary files
-    apk -U del cabal build-base ghc &&\
+    apk del cabal build-base ghc &&\
 
 # add pandoc user
- useradd -ms /bin/bash pandoc
+ adduser -s /bin/bash pandoc
 
 USER pandoc
 
